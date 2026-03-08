@@ -1342,43 +1342,56 @@ namespace OpenUtau.App.Views {
         }
 
         void TranscribeGame(UPart part) {
-            // Convert audio to notes using GAME model
+            // Show settings dialog first, then convert audio to notes using GAME model
             if (part is UWavePart wavePart) {
-                try {
-                    string text = ThemeManager.GetString("context.part.transcribing.game");
-                    var msgbox = MessageBox.ShowModal(this, $"{text} {part.name}", text);
-                    int wavDurS = (int)(wavePart.fileDurationMs / 1000.0);
-                    var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
-                    var transcribeTask = Task.Run(() => {
-                        using (var game = new OpenUtau.Core.Analysis.Game.Game()) {
-                            return game.Transcribe(DocManager.Inst.Project, wavePart, wavPosS => {
-                                msgbox.SetText(string.Format("{0} {1}\n{2}s / {3}s", text, part.name, wavPosS, wavDurS));
-                            });
-                        }
-                    });
-                    transcribeTask.ContinueWith(task => {
-                        msgbox?.Close();
-                        if (task.IsFaulted) {
-                            Log.Error(task.Exception, $"Failed to transcribe (GAME) part {part.name}");
-                            MessageBox.ShowError(this, task.Exception);
-                            return;
-                        }
-                        var voicePart = task.Result;
-                        if (voicePart != null) {
-                            var project = DocManager.Inst.Project;
-                            var track = new UTrack(project);
-                            track.TrackNo = project.tracks.Count;
-                            voicePart.trackNo = track.TrackNo;
-                            DocManager.Inst.StartUndoGroup("command.part.transcribe.game");
-                            DocManager.Inst.ExecuteCmd(new AddTrackCommand(project, track));
-                            DocManager.Inst.ExecuteCmd(new AddPartCommand(project, voicePart));
-                            DocManager.Inst.EndUndoGroup();
-                        }
-                    }, scheduler);
-                } catch (Exception e) {
-                    Log.Error(e, $"Failed to transcribe (GAME) part {part.name}");
-                    MessageBox.ShowError(this, e);
-                }
+                var dialog = new GameSettingsDialog();
+                dialog.onFinish = (result) => {
+                    try {
+                        string text = ThemeManager.GetString("context.part.transcribing.game");
+                        var msgbox = MessageBox.ShowModal(this, $"{text} {part.name}", text);
+                        int wavDurS = (int)(wavePart.fileDurationMs / 1000.0);
+                        var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+                        var gameParams = new OpenUtau.Core.Analysis.Game.GameParams {
+                            SamplingSteps = result.SamplingSteps,
+                            T0 = result.T0,
+                            BoundaryThreshold = result.BoundaryThreshold,
+                            BoundaryRadiusSeconds = result.BoundaryRadiusSeconds,
+                            ScoreThreshold = result.ScoreThreshold,
+                            LanguageId = result.LanguageId,
+                        };
+                        string modelPath = result.ModelPath;
+                        var transcribeTask = Task.Run(() => {
+                            using (var game = new OpenUtau.Core.Analysis.Game.Game(modelPath, gameParams)) {
+                                return game.Transcribe(DocManager.Inst.Project, wavePart, wavPosS => {
+                                    msgbox.SetText(string.Format("{0} {1}\n{2}s / {3}s", text, part.name, wavPosS, wavDurS));
+                                });
+                            }
+                        });
+                        transcribeTask.ContinueWith(task => {
+                            msgbox?.Close();
+                            if (task.IsFaulted) {
+                                Log.Error(task.Exception, $"Failed to transcribe (GAME) part {part.name}");
+                                MessageBox.ShowError(this, task.Exception);
+                                return;
+                            }
+                            var voicePart = task.Result;
+                            if (voicePart != null) {
+                                var project = DocManager.Inst.Project;
+                                var track = new UTrack(project);
+                                track.TrackNo = project.tracks.Count;
+                                voicePart.trackNo = track.TrackNo;
+                                DocManager.Inst.StartUndoGroup("command.part.transcribe.game");
+                                DocManager.Inst.ExecuteCmd(new AddTrackCommand(project, track));
+                                DocManager.Inst.ExecuteCmd(new AddPartCommand(project, voicePart));
+                                DocManager.Inst.EndUndoGroup();
+                            }
+                        }, scheduler);
+                    } catch (Exception e) {
+                        Log.Error(e, $"Failed to transcribe (GAME) part {part.name}");
+                        MessageBox.ShowError(this, e);
+                    }
+                };
+                dialog.ShowDialog(this);
             }
         }
 

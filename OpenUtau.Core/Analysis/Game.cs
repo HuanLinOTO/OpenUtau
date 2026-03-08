@@ -27,6 +27,24 @@ namespace OpenUtau.Core.Analysis.Game {
         public int EmbeddingDim { get; set; } = 256;
     }
 
+    /// <summary>
+    /// Parameters for GAME inference, aligned with infer.py CLI options.
+    /// </summary>
+    public class GameParams {
+        /// <summary>Number of D3PM sampling steps (--nsteps). Default: 8</summary>
+        public int SamplingSteps { get; set; } = 8;
+        /// <summary>Starting T value for D3PM (--t0). Default: 0.0</summary>
+        public float T0 { get; set; } = 0.0f;
+        /// <summary>Boundary decoding threshold (--seg-threshold). Default: 0.3</summary>
+        public float BoundaryThreshold { get; set; } = 0.3f;
+        /// <summary>Boundary decoding radius in seconds (--seg-radius). Default: 0.02</summary>
+        public float BoundaryRadiusSeconds { get; set; } = 0.02f;
+        /// <summary>Note presence threshold (--est-threshold). Default: 0.2</summary>
+        public float ScoreThreshold { get; set; } = 0.2f;
+        /// <summary>Language ID (0 = auto/universal). From config.json languages map.</summary>
+        public int LanguageId { get; set; } = 0;
+    }
+
     public class Game : IDisposable {
         InferenceSession encoderSession;
         InferenceSession segmenterSession;
@@ -38,9 +56,11 @@ namespace OpenUtau.Core.Analysis.Game {
 
         // D3PM sampling parameters
         int samplingSteps = 8;
+        float t0 = 0.0f;
         float boundaryThreshold = 0.3f;
         int boundaryRadius = 2;
         float scoreThreshold = 0.2f;
+        int languageId = 0;
 
         struct GameResult {
             public float[] durations;
@@ -50,8 +70,18 @@ namespace OpenUtau.Core.Analysis.Game {
             public int N;
         }
 
-        public Game() {
-            Location = Path.Combine(PathManager.Inst.DependencyPath, "game");
+        /// <summary>
+        /// Create GAME instance with default model location and parameters.
+        /// </summary>
+        public Game() : this(null, null) { }
+
+        /// <summary>
+        /// Create GAME instance with specified model path and parameters.
+        /// </summary>
+        /// <param name="modelPath">Path to model directory, or null for default (Dependencies/game)</param>
+        /// <param name="gameParams">Inference parameters, or null for defaults</param>
+        public Game(string? modelPath, GameParams? gameParams) {
+            Location = modelPath ?? Path.Combine(PathManager.Inst.DependencyPath, "game");
             string configPath = Path.Combine(Location, "config.json");
             if (!File.Exists(configPath)) {
                 throw new MessageCustomizableException(
@@ -66,6 +96,18 @@ namespace OpenUtau.Core.Analysis.Game {
             var jsonText = File.ReadAllText(configPath, System.Text.Encoding.UTF8);
             config = JsonSerializer.Deserialize<GameConfig>(jsonText)
                      ?? throw new InvalidOperationException("Failed to parse GAME config.json");
+
+            // Apply user parameters
+            if (gameParams != null) {
+                samplingSteps = gameParams.SamplingSteps;
+                boundaryThreshold = gameParams.BoundaryThreshold;
+                boundaryRadius = (int)Math.Round(gameParams.BoundaryRadiusSeconds / config.Timestep);
+                scoreThreshold = gameParams.ScoreThreshold;
+                languageId = gameParams.LanguageId;
+                t0 = gameParams.T0;
+            } else {
+                boundaryRadius = (int)Math.Round(0.02f / config.Timestep);
+            }
 
             encoderSession = Onnx.getInferenceSession(
                 Path.Combine(Location, "encoder.onnx"));
@@ -122,7 +164,7 @@ namespace OpenUtau.Core.Analysis.Game {
             // Add language input if model supports it
             if (segmenterSession.InputNames.Contains("language")) {
                 inputs.Add(NamedOnnxValue.CreateFromTensor("language",
-                    new DenseTensor<long>(new long[] { 0 }, new int[] { 1 }))); // 0 = universal
+                    new DenseTensor<long>(new long[] { languageId }, new int[] { 1 })));
             }
 
             inputs.Add(NamedOnnxValue.CreateFromTensor("known_boundaries",
@@ -155,10 +197,11 @@ namespace OpenUtau.Core.Analysis.Game {
             bool[] boundaries = (bool[])knownBoundaries.Clone();
 
             if (config.Loop) {
-                // D3PM sampling: iterate from t=0 (full noise) towards t=1 (data)
-                float step = 1.0f / samplingSteps;
+                // D3PM sampling: iterate from t0 towards t=1 (data)
+                // Aligned with infer.py: ts = [t0 + i * step for i in range(nsteps)]
+                float step = (1.0f - t0) / samplingSteps;
                 for (int i = 0; i < samplingSteps; i++) {
-                    float t = i * step;
+                    float t = t0 + i * step;
                     boundaries = RunSegmenterStep(
                         x_seg, T, C, knownBoundaries, boundaries, t, maskT);
                 }

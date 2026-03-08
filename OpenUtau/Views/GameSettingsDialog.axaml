@@ -1,0 +1,85 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        x:Class="OpenUtau.App.Views.GameSettingsDialog"
+        Icon="/Assets/open-utau.ico"
+        Title="{DynamicResource game.settings.title}"
+        WindowStartupLocation="CenterOwner"
+        MinWidth="520" MinHeight="400" Width="520" Height="400"
+        CanResize="False">
+  <Grid Margin="{Binding $parent.WindowDecorationMargin}" RowDefinitions="*,Auto">
+    <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+      <StackPanel Margin="15" Spacing="10">
+
+        <!-- Model Selection -->
+        <TextBlock FontWeight="Bold" Text="{DynamicResource game.settings.section.model}" Margin="0,0,0,2"/>
+        <Grid ColumnDefinitions="140,10,*">
+          <TextBlock VerticalAlignment="Center" Text="{DynamicResource game.settings.model}"/>
+          <ComboBox Grid.Column="2" Name="ModelCombo" HorizontalAlignment="Stretch"
+                    SelectionChanged="OnModelChanged"/>
+        </Grid>
+        <Grid ColumnDefinitions="140,10,*">
+          <TextBlock VerticalAlignment="Center" Text="{DynamicResource game.settings.language}"/>
+          <ComboBox Grid.Column="2" Name="LanguageCombo" HorizontalAlignment="Stretch"/>
+        </Grid>
+
+        <Separator Margin="0,5"/>
+
+        <!-- D3PM Sampling Parameters -->
+        <TextBlock FontWeight="Bold" Text="{DynamicResource game.settings.section.segmentation}" Margin="0,0,0,2"/>
+        <Grid ColumnDefinitions="140,10,50,10,*">
+          <TextBlock VerticalAlignment="Center" Text="{DynamicResource game.settings.steps}"/>
+          <TextBlock Grid.Column="2" Name="StepsText" VerticalAlignment="Center"/>
+          <Slider Grid.Column="4" Name="StepsSlider" Classes="fader"
+                  Minimum="1" Maximum="32" Value="8"
+                  TickPlacement="BottomRight" TickFrequency="1" IsSnapToTickEnabled="True"/>
+        </Grid>
+        <Grid ColumnDefinitions="140,10,50,10,*">
+          <TextBlock VerticalAlignment="Center" Text="{DynamicResource game.settings.t0}"/>
+          <TextBlock Grid.Column="2" Name="T0Text" VerticalAlignment="Center"/>
+          <Slider Grid.Column="4" Name="T0Slider" Classes="fader"
+                  Minimum="0" Maximum="0.95" Value="0"
+                  TickPlacement="BottomRight" TickFrequency="0.05" IsSnapToTickEnabled="True"/>
+        </Grid>
+        <Grid ColumnDefinitions="140,10,50,10,*">
+          <TextBlock VerticalAlignment="Center" Text="{DynamicResource game.settings.seg.threshold}"/>
+          <TextBlock Grid.Column="2" Name="SegThresholdText" VerticalAlignment="Center"/>
+          <Slider Grid.Column="4" Name="SegThresholdSlider" Classes="fader"
+                  Minimum="0.01" Maximum="0.99" Value="0.3"
+                  TickPlacement="BottomRight" TickFrequency="0.01" IsSnapToTickEnabled="True"/>
+        </Grid>
+        <Grid ColumnDefinitions="140,10,50,10,*">
+          <TextBlock VerticalAlignment="Center" Text="{DynamicResource game.settings.seg.radius}"/>
+          <TextBlock Grid.Column="2" Name="SegRadiusText" VerticalAlignment="Center"/>
+          <Slider Grid.Column="4" Name="SegRadiusSlider" Classes="fader"
+                  Minimum="0.005" Maximum="0.1" Value="0.02"
+                  TickPlacement="BottomRight" TickFrequency="0.005" IsSnapToTickEnabled="True"/>
+        </Grid>
+
+        <Separator Margin="0,5"/>
+
+        <!-- Estimation Parameters -->
+        <TextBlock FontWeight="Bold" Text="{DynamicResource game.settings.section.estimation}" Margin="0,0,0,2"/>
+        <Grid ColumnDefinitions="140,10,50,10,*">
+          <TextBlock VerticalAlignment="Center" Text="{DynamicResource game.settings.est.threshold}"/>
+          <TextBlock Grid.Column="2" Name="EstThresholdText" VerticalAlignment="Center"/>
+          <Slider Grid.Column="4" Name="EstThresholdSlider" Classes="fader"
+                  Minimum="0.01" Maximum="0.99" Value="0.2"
+                  TickPlacement="BottomRight" TickFrequency="0.01" IsSnapToTickEnabled="True"/>
+        </Grid>
+
+      </StackPanel>
+    </ScrollViewer>
+
+    <!-- OK / Cancel -->
+    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right"
+                Margin="15,5,15,15" Spacing="10">
+      <Button Name="OkButton" Content="{DynamicResource game.settings.ok}"
+              Click="OkButtonClick" MinWidth="80"/>
+      <Button Name="CancelButton" Content="{DynamicResource game.settings.cancel}"
+              Click="CancelButtonClick" MinWidth="80"/>
+    </StackPanel>
+  </Grid>
+</Window>
