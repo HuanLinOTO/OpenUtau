@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Zeige Dateispeicherort</system:String>
   <system:String x:Key="context.part.rename">Segment umbennen</system:String>
   <system:String x:Key="context.part.replaceaudio">Audiodatei erneut auswählen</system:String>
-  <system:String x:Key="context.part.transcribe">Transkribiere Audiodateien, um ein Notenteil zu erstellen</system:String>
-  <system:String x:Key="context.part.transcribing">Transkribieren</system:String>
+  <system:String x:Key="context.part.transcribe">Transkribiere Audiodateien, um ein Notenteil zu erstellen (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Transkribieren (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Transkribiere Audiodateien, um ein Notenteil zu erstellen (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Transkribieren (GAME)</system:String>
   <system:String x:Key="context.pitch.easein">Einblenden</system:String>
   <system:String x:Key="context.pitch.easeinout">Überblendungen</system:String>
   <system:String x:Key="context.pitch.easeout">Ausblenden</system:String>

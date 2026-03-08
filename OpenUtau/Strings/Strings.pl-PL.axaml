@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Zobacz lokalizację pliku</system:String>
   <system:String x:Key="context.part.rename">Zmień nazwę części</system:String>
   <system:String x:Key="context.part.replaceaudio">Wybierz ponownie częśc audio</system:String>
-  <system:String x:Key="context.part.transcribe">Transkrybuj audio do części z nutami</system:String>
-  <system:String x:Key="context.part.transcribing">Transkrypcja w toku...</system:String>
+  <system:String x:Key="context.part.transcribe">Transkrybuj audio do części z nutami (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Transkrypcja w toku... (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Transkrybuj audio do części z nutami (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Transkrypcja w toku... (GAME)</system:String>
   <!--<system:String x:Key="context.pitch.easein">Ease in</system:String>-->
   <!--<system:String x:Key="context.pitch.easeinout">Ease in/out</system:String>-->
   <!--<system:String x:Key="context.pitch.easeout">Ease out</system:String>-->

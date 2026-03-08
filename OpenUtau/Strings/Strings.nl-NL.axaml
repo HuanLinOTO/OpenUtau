@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Bestandslocatie bekijken</system:String>
   <system:String x:Key="context.part.rename">Naam wijzigen</system:String>
   <system:String x:Key="context.part.replaceaudio">Audiobestand opnieuw selecteren</system:String>
-  <system:String x:Key="context.part.transcribe">Audio transcriberen om een notitiegedeelte te maken</system:String>
-  <system:String x:Key="context.part.transcribing">Transcriberen</system:String>
+  <system:String x:Key="context.part.transcribe">Audio transcriberen om een notitiegedeelte te maken (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Transcriberen (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Audio transcriberen om een notitiegedeelte te maken (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Transcriberen (GAME)</system:String>
   <system:String x:Key="context.pitch.easein">Zak in</system:String>
   <system:String x:Key="context.pitch.easeinout">Zak in/uit</system:String>
   <system:String x:Key="context.pitch.easeout">Zak uit</system:String>

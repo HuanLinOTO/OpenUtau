@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Abrir ubicación de archivos</system:String>
   <system:String x:Key="context.part.rename">Renombrar parte</system:String>
   <system:String x:Key="context.part.replaceaudio">Reemplazar audio</system:String>
-  <system:String x:Key="context.part.transcribe">Transcripción de audio a notas</system:String>
-  <system:String x:Key="context.part.transcribing">Transcribiendo</system:String>
+  <system:String x:Key="context.part.transcribe">Transcripción de audio a notas (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Transcribiendo (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Transcripción de audio a notas (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Transcribiendo (GAME)</system:String>
   <system:String x:Key="context.pitch.easein">Suavizar ataque</system:String>
   <system:String x:Key="context.pitch.easeinout">Suavizar ataque/salida</system:String>
   <system:String x:Key="context.pitch.easeout">Suavizar salida</system:String>

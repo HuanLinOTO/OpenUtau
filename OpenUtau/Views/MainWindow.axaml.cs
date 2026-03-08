@@ -49,6 +49,7 @@ namespace OpenUtau.App.Views {
         private readonly ReactiveCommand<UPart, Unit> PartGotoFileCommand;
         private readonly ReactiveCommand<UPart, Unit> PartReplaceAudioCommand;
         private readonly ReactiveCommand<UPart, Unit> PartTranscribeCommand;
+        private readonly ReactiveCommand<UPart, Unit> PartTranscribeGameCommand;
         private readonly ReactiveCommand<UPart, Unit> PartMergeCommand;
 
         public MainWindow() {
@@ -82,6 +83,7 @@ namespace OpenUtau.App.Views {
             PartGotoFileCommand = ReactiveCommand.Create<UPart>(part => GotoFile(part));
             PartReplaceAudioCommand = ReactiveCommand.Create<UPart>(part => ReplaceAudio(part));
             PartTranscribeCommand = ReactiveCommand.Create<UPart>(part => Transcribe(part));
+            PartTranscribeGameCommand = ReactiveCommand.Create<UPart>(part => TranscribeGame(part));
             PartMergeCommand = ReactiveCommand.Create<UPart>(part => MergePart(part));
 
             AddHandler(DragDrop.DropEvent, OnDrop);
@@ -1084,6 +1086,7 @@ namespace OpenUtau.App.Views {
                             PartReplaceAudioCommand = PartReplaceAudioCommand,
                             PartRenameCommand = PartRenameCommand,
                             PartTranscribeCommand = PartTranscribeCommand,
+                            PartTranscribeGameCommand = PartTranscribeGameCommand,
                             PartMergeCommand = PartMergeCommand,
                         };
                         shouldOpenPartsContextMenu = true;
@@ -1333,6 +1336,47 @@ namespace OpenUtau.App.Views {
                     }, scheduler);
                 } catch (Exception e) {
                     Log.Error(e, $"Failed to transcribe part {part.name}");
+                    MessageBox.ShowError(this, e);
+                }
+            }
+        }
+
+        void TranscribeGame(UPart part) {
+            // Convert audio to notes using GAME model
+            if (part is UWavePart wavePart) {
+                try {
+                    string text = ThemeManager.GetString("context.part.transcribing.game");
+                    var msgbox = MessageBox.ShowModal(this, $"{text} {part.name}", text);
+                    int wavDurS = (int)(wavePart.fileDurationMs / 1000.0);
+                    var scheduler = TaskScheduler.FromCurrentSynchronizationContext();
+                    var transcribeTask = Task.Run(() => {
+                        using (var game = new OpenUtau.Core.Analysis.Game.Game()) {
+                            return game.Transcribe(DocManager.Inst.Project, wavePart, wavPosS => {
+                                msgbox.SetText(string.Format("{0} {1}\n{2}s / {3}s", text, part.name, wavPosS, wavDurS));
+                            });
+                        }
+                    });
+                    transcribeTask.ContinueWith(task => {
+                        msgbox?.Close();
+                        if (task.IsFaulted) {
+                            Log.Error(task.Exception, $"Failed to transcribe (GAME) part {part.name}");
+                            MessageBox.ShowError(this, task.Exception);
+                            return;
+                        }
+                        var voicePart = task.Result;
+                        if (voicePart != null) {
+                            var project = DocManager.Inst.Project;
+                            var track = new UTrack(project);
+                            track.TrackNo = project.tracks.Count;
+                            voicePart.trackNo = track.TrackNo;
+                            DocManager.Inst.StartUndoGroup("command.part.transcribe.game");
+                            DocManager.Inst.ExecuteCmd(new AddTrackCommand(project, track));
+                            DocManager.Inst.ExecuteCmd(new AddPartCommand(project, voicePart));
+                            DocManager.Inst.EndUndoGroup();
+                        }
+                    }, scheduler);
+                } catch (Exception e) {
+                    Log.Error(e, $"Failed to transcribe (GAME) part {part.name}");
                     MessageBox.ShowError(this, e);
                 }
             }

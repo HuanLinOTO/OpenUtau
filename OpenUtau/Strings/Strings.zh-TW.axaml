@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">開啟檔案位置</system:String>
   <system:String x:Key="context.part.rename">重新命名段落</system:String>
   <system:String x:Key="context.part.replaceaudio">更換音訊</system:String>
-  <!--<system:String x:Key="context.part.transcribe">Transcribe audio to create a note part</system:String>-->
-  <!--<system:String x:Key="context.part.transcribing">Transcribing</system:String>-->
+  <!--<system:String x:Key="context.part.transcribe">Transcribe audio to create a note part (SOME)</system:String>-->
+  <!--<system:String x:Key="context.part.transcribing">Transcribing (SOME)</system:String>-->
+  <!--<system:String x:Key="context.part.transcribe.game">Transcribe audio to create a note part (GAME)</system:String>-->
+  <!--<system:String x:Key="context.part.transcribing.game">Transcribing (GAME)</system:String>-->
   <system:String x:Key="context.pitch.easein">緩入</system:String>
   <system:String x:Key="context.pitch.easeinout">緩入並緩出</system:String>
   <system:String x:Key="context.pitch.easeout">緩出</system:String>

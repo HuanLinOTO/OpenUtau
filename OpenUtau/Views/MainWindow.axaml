@@ -376,6 +376,10 @@
                           IsVisible="{Binding IsWavePart}"
                           Command="{Binding PartTranscribeCommand}"
                           CommandParameter="{Binding Part}"/>
+                <MenuItem Header="{DynamicResource context.part.transcribe.game}"
+                          IsVisible="{Binding IsWavePart}"
+                          Command="{Binding PartTranscribeGameCommand}"
+                          CommandParameter="{Binding Part}"/>
                 <MenuItem Header="{DynamicResource context.part.merge}"
                           IsVisible="{Binding IsVoicePart}"
                           Command="{Binding PartMergeCommand}"

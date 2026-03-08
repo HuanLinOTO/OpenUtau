@@ -12,8 +12,10 @@
   <!--<system:String x:Key="context.part.gotofile">View file location</system:String>-->
   <system:String x:Key="context.part.rename">Rinomina parte</system:String>
   <system:String x:Key="context.part.replaceaudio">Reseleziona file audio</system:String>
-  <!--<system:String x:Key="context.part.transcribe">Transcribe audio to create a note part</system:String>-->
-  <!--<system:String x:Key="context.part.transcribing">Transcribing</system:String>-->
+  <!--<system:String x:Key="context.part.transcribe">Transcribe audio to create a note part (SOME)</system:String>-->
+  <!--<system:String x:Key="context.part.transcribing">Transcribing (SOME)</system:String>-->
+  <!--<system:String x:Key="context.part.transcribe.game">Transcribe audio to create a note part (GAME)</system:String>-->
+  <!--<system:String x:Key="context.part.transcribing.game">Transcribing (GAME)</system:String>-->
   <system:String x:Key="context.pitch.easein">Rilascio</system:String>
   <system:String x:Key="context.pitch.easeinout">Attacco/Rilascio</system:String>
   <system:String x:Key="context.pitch.easeout">Attacco</system:String>

@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Просмотр расположения файла</system:String>
   <system:String x:Key="context.part.rename">Переименовать часть</system:String>
   <system:String x:Key="context.part.replaceaudio">Повторный выбор аудиофайла</system:String>
-  <system:String x:Key="context.part.transcribe">Транскрибировать аудио для создания нотной партии</system:String>
-  <system:String x:Key="context.part.transcribing">Транскрибирование</system:String>
+  <system:String x:Key="context.part.transcribe">Транскрибировать аудио для создания нотной партии (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Транскрибирование (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Транскрибировать аудио для создания нотной партии (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Транскрибирование (GAME)</system:String>
   <system:String x:Key="context.pitch.easein">Плавное начало</system:String>
   <system:String x:Key="context.pitch.easeinout">Плавное начало/конец</system:String>
   <system:String x:Key="context.pitch.easeout">Плавный конец</system:String>

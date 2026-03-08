@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Ver local do arquivo</system:String>
   <system:String x:Key="context.part.rename">Renomear parte</system:String>
   <system:String x:Key="context.part.replaceaudio">Re-selecione o arquivo de áudio</system:String>
-  <system:String x:Key="context.part.transcribe">Transcreva o áudio para criar uma parte de nota</system:String>
-  <system:String x:Key="context.part.transcribing">Transcrever</system:String>
+  <system:String x:Key="context.part.transcribe">Transcreva o áudio para criar uma parte de nota (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Transcrever (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Transcreva o áudio para criar uma parte de nota (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Transcrever (GAME)</system:String>
   <system:String x:Key="context.pitch.easein">Curva J</system:String>
   <system:String x:Key="context.pitch.easeinout">Curva S</system:String>
   <system:String x:Key="context.pitch.easeout">Curva R</system:String>

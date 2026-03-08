@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Vezi locația în dosar</system:String>
   <system:String x:Key="context.part.rename">Redenumește segmentul</system:String>
   <system:String x:Key="context.part.replaceaudio">Reselectează fișierul audio</system:String>
-  <system:String x:Key="context.part.transcribe">Transcrie audio în Midi</system:String>
-  <system:String x:Key="context.part.transcribing">Se transcrie</system:String>
+  <system:String x:Key="context.part.transcribe">Transcrie audio în Midi (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Se transcrie (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Transcrie audio în Midi (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Se transcrie (GAME)</system:String>
   <!--<system:String x:Key="context.pitch.easein">Ease in</system:String>-->
   <!--<system:String x:Key="context.pitch.easeinout">Ease in/out</system:String>-->
   <!--<system:String x:Key="context.pitch.easeout">Ease out</system:String>-->

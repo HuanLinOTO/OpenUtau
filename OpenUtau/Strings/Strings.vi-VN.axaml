@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Xem thư mục chứa tệp</system:String>
   <system:String x:Key="context.part.rename">Đặt tên phần</system:String>
   <system:String x:Key="context.part.replaceaudio">Chọn tệp nhạc khác</system:String>
-  <system:String x:Key="context.part.transcribe">Chuyển cao độ từ nhạc thành các nốt</system:String>
-  <system:String x:Key="context.part.transcribing">Đang chuyển</system:String>
+  <system:String x:Key="context.part.transcribe">Chuyển cao độ từ nhạc thành các nốt (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Đang chuyển (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Chuyển cao độ từ nhạc thành các nốt (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Đang chuyển (GAME)</system:String>
   <system:String x:Key="context.pitch.easein">Cong xuống</system:String>
   <system:String x:Key="context.pitch.easeinout">Cong xuống/lên</system:String>
   <system:String x:Key="context.pitch.easeout">Cong lên</system:String>

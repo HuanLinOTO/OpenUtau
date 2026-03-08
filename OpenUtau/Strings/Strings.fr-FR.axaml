@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">Voir l'emplacement du fichier</system:String>
   <system:String x:Key="context.part.rename">Renommer la partie</system:String>
   <system:String x:Key="context.part.replaceaudio">Remplacer le fichier audio</system:String>
-  <system:String x:Key="context.part.transcribe">Transcrire l'audio en piste midi</system:String>
-  <system:String x:Key="context.part.transcribing">Transcription</system:String>
+  <system:String x:Key="context.part.transcribe">Transcrire l'audio en piste midi (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">Transcription (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">Transcrire l'audio en piste midi (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">Transcription (GAME)</system:String>
   <system:String x:Key="context.pitch.easein">Courber vers le haut</system:String>
   <system:String x:Key="context.pitch.easeinout">Courber vers le haut/bas</system:String>
   <system:String x:Key="context.pitch.easeout">Courber vers le bas</system:String>

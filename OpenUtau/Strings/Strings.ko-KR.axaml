@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">파일 위치 열기</system:String>
   <system:String x:Key="context.part.rename">파트 이름 변경</system:String>
   <system:String x:Key="context.part.replaceaudio">오디오 파일 교체</system:String>
-  <system:String x:Key="context.part.transcribe">새 노트 파트로 오디오 전사</system:String>
-  <system:String x:Key="context.part.transcribing">전사하고 있어요...</system:String>
+  <system:String x:Key="context.part.transcribe">새 노트 파트로 오디오 전사 (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">전사하고 있어요... (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">새 노트 파트로 오디오 전사 (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">전사하고 있어요... (GAME)</system:String>
   <!--<system:String x:Key="context.pitch.easein">Ease in</system:String>-->
   <!--<system:String x:Key="context.pitch.easeinout">Ease in/out</system:String>-->
   <!--<system:String x:Key="context.pitch.easeout">Ease out</system:String>-->

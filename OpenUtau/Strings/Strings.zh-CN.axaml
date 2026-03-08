@@ -12,8 +12,10 @@
   <system:String x:Key="context.part.gotofile">打开文件位置</system:String>
   <system:String x:Key="context.part.rename">重命名片段</system:String>
   <system:String x:Key="context.part.replaceaudio">替换音频</system:String>
-  <system:String x:Key="context.part.transcribe">将音频识别为音符区段</system:String>
-  <system:String x:Key="context.part.transcribing">正在识别音符</system:String>
+  <system:String x:Key="context.part.transcribe">将音频识别为音符区段 (SOME)</system:String>
+  <system:String x:Key="context.part.transcribing">正在识别音符 (SOME)</system:String>
+  <system:String x:Key="context.part.transcribe.game">将音频识别为音符区段 (GAME)</system:String>
+  <system:String x:Key="context.part.transcribing.game">正在识别音符 (GAME)</system:String>
   <system:String x:Key="context.pitch.easein">缓入</system:String>
   <system:String x:Key="context.pitch.easeinout">缓入缓出</system:String>
   <system:String x:Key="context.pitch.easeout">缓出</system:String>
