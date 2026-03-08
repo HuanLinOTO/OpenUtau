@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 using Microsoft.ML.OnnxRuntime;
 using Microsoft.ML.OnnxRuntime.Tensors;
 using OpenUtau.Core.Ustx;
+using Serilog;
 
 namespace OpenUtau.Core.Analysis.Game {
 
@@ -43,6 +44,8 @@ namespace OpenUtau.Core.Analysis.Game {
         public float ScoreThreshold { get; set; } = 0.2f;
         /// <summary>Language ID (0 = auto/universal). From config.json languages map.</summary>
         public int LanguageId { get; set; } = 0;
+        /// <summary>Force CPU inference (bypass DML/GPU).</summary>
+        public bool ForceCpu { get; set; } = false;
     }
 
     public class Game : IDisposable {
@@ -52,6 +55,7 @@ namespace OpenUtau.Core.Analysis.Game {
         InferenceSession bd2durSession;
         GameConfig config;
         string Location;
+        bool forceCpu;
         private bool disposedValue;
 
         // D3PM sampling parameters
@@ -82,6 +86,7 @@ namespace OpenUtau.Core.Analysis.Game {
         /// <param name="gameParams">Inference parameters, or null for defaults</param>
         public Game(string? modelPath, GameParams? gameParams) {
             Location = modelPath ?? Path.Combine(PathManager.Inst.DependencyPath, "game");
+            Log.Information("GAME: Model location = {Location}", Location);
             string configPath = Path.Combine(Location, "config.json");
             if (!File.Exists(configPath)) {
                 throw new MessageCustomizableException(
@@ -105,18 +110,53 @@ namespace OpenUtau.Core.Analysis.Game {
                 scoreThreshold = gameParams.ScoreThreshold;
                 languageId = gameParams.LanguageId;
                 t0 = gameParams.T0;
+                forceCpu = gameParams.ForceCpu;
             } else {
                 boundaryRadius = (int)Math.Round(0.02f / config.Timestep);
             }
 
-            encoderSession = Onnx.getInferenceSession(
-                Path.Combine(Location, "encoder.onnx"));
-            segmenterSession = Onnx.getInferenceSession(
-                Path.Combine(Location, "segmenter.onnx"));
-            estimatorSession = Onnx.getInferenceSession(
-                Path.Combine(Location, "estimator.onnx"));
-            bd2durSession = Onnx.getInferenceSession(
-                Path.Combine(Location, "bd2dur.onnx"));
+            // DML may not support certain operators (e.g. Gelu) in GAME models.
+            // Try GPU first, fall back to CPU if it fails.
+            encoderSession = CreateSessionWithFallback("encoder.onnx");
+            segmenterSession = CreateSessionWithFallback("segmenter.onnx");
+            estimatorSession = CreateSessionWithFallback("estimator.onnx");
+            bd2durSession = CreateSessionWithFallback("bd2dur.onnx");
+        }
+
+        /// <summary>
+        /// Try creating an ONNX session with GPU acceleration; fall back to CPU on failure.
+        /// </summary>
+        private InferenceSession CreateSessionWithFallback(string modelFile) {
+            string modelPath = Path.Combine(Location, modelFile);
+            Log.Information("GAME: Loading model {ModelPath} (exists={Exists}, forceCpu={ForceCpu})",
+                modelPath, File.Exists(modelPath), forceCpu);
+            if (forceCpu) {
+                return Onnx.getInferenceSession(modelPath, force_cpu: true);
+            }
+            try {
+                var session = Onnx.getInferenceSession(modelPath);
+                Log.Information("GAME: Successfully loaded {Model} with GPU", modelFile);
+                return session;
+            } catch (Exception e) {
+                Log.Warning(e, "GAME: Failed to create GPU session for {Model}, falling back to CPU", modelFile);
+                return Onnx.getInferenceSession(modelPath, force_cpu: true);
+            }
+        }
+
+        /// <summary>
+        /// Dispose existing sessions and rebuild them all with CPU.
+        /// Called when GPU inference fails at runtime.
+        /// </summary>
+        private void RebuildSessionsAsCpu() {
+            Log.Information("GAME: Rebuilding all sessions with CPU");
+            encoderSession?.Dispose();
+            segmenterSession?.Dispose();
+            estimatorSession?.Dispose();
+            bd2durSession?.Dispose();
+            encoderSession = Onnx.getInferenceSession(Path.Combine(Location, "encoder.onnx"), force_cpu: true);
+            segmenterSession = Onnx.getInferenceSession(Path.Combine(Location, "segmenter.onnx"), force_cpu: true);
+            estimatorSession = Onnx.getInferenceSession(Path.Combine(Location, "estimator.onnx"), force_cpu: true);
+            bd2durSession = Onnx.getInferenceSession(Path.Combine(Location, "bd2dur.onnx"), force_cpu: true);
         }
 
         /// <summary>
@@ -268,6 +308,19 @@ namespace OpenUtau.Core.Analysis.Game {
         /// 4. Estimator: note pitch estimation
         /// </summary>
         GameResult Analyze(float[] samples) {
+            try {
+                return AnalyzeInternal(samples);
+            } catch (OnnxRuntimeException e) when (!forceCpu) {
+                // DML may fail at inference time on unsupported ops.
+                // Rebuild all sessions as CPU and retry.
+                Log.Warning(e, "GAME: GPU inference failed, rebuilding all sessions with CPU and retrying");
+                forceCpu = true;
+                RebuildSessionsAsCpu();
+                return AnalyzeInternal(samples);
+            }
+        }
+
+        private GameResult AnalyzeInternal(float[] samples) {
             // 1. Encoder
             var (x_seg, x_est, maskT, T) = RunEncoder(samples);
             int C = config.EmbeddingDim;

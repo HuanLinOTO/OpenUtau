@@ -70,6 +70,14 @@
                   TickPlacement="BottomRight" TickFrequency="0.01" IsSnapToTickEnabled="True"/>
         </Grid>
 
+        <Separator Margin="0,5"/>
+
+        <!-- Performance -->
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <CheckBox Name="ForceCpuCheckBox"/>
+          <TextBlock VerticalAlignment="Center" Text="{DynamicResource game.settings.force.cpu}"/>
+        </StackPanel>
+
       </StackPanel>
     </ScrollViewer>
 

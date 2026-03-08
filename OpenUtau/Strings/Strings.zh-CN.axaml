@@ -30,6 +30,7 @@
   <system:String x:Key="game.settings.est.threshold">存在阈值</system:String>
   <system:String x:Key="game.settings.ok">确定</system:String>
   <system:String x:Key="game.settings.cancel">取消</system:String>
+  <system:String x:Key="game.settings.force.cpu">强制使用 CPU（禁用 GPU 加速）</system:String>
   <system:String x:Key="context.pitch.easein">缓入</system:String>
   <system:String x:Key="context.pitch.easeinout">缓入缓出</system:String>
   <system:String x:Key="context.pitch.easeout">缓出</system:String>
@@ -250,6 +251,7 @@
   <system:String x:Key="menu.tools.singer.installadv">安装歌手(高级模式)...</system:String>
   <system:String x:Key="menu.tools.singers">歌手...</system:String>
   <system:String x:Key="menu.tools.wavtoolresampler.install">安装 Wavtool/Resampler (.exe)...</system:String>
+  <system:String x:Key="menu.tools.packages">包管理...</system:String>
   <system:String x:Key="menu.view">视图</system:String>
 
   <!--<system:String x:Key="mergevoicebank.back">Back</system:String>-->
@@ -319,6 +321,35 @@ Syntax: prefix,suffix</system:String>-->
 
   <system:String x:Key="phoneticassistant.caption">语音学助手</system:String>
   <system:String x:Key="phoneticassistant.copy">复制</system:String>
+
+  <system:String x:Key="packages.caption">包管理</system:String>
+  <system:String x:Key="packages.refresh">刷新</system:String>
+  <system:String x:Key="packages.installed">已安装</system:String>
+  <system:String x:Key="packages.col.name">名称</system:String>
+  <system:String x:Key="packages.col.id">Id</system:String>
+  <system:String x:Key="packages.col.developer">开发者</system:String>
+  <system:String x:Key="packages.col.version">版本</system:String>
+  <system:String x:Key="packages.col.action">操作</system:String>
+  <system:String x:Key="packages.col.installed">已安装</system:String>
+  <system:String x:Key="packages.unknownversion">未知版本</system:String>
+  <system:String x:Key="packages.install">安装</system:String>
+  <system:String x:Key="packages.update">更新</system:String>
+  <system:String x:Key="packages.uninstall">卸载</system:String>
+  <system:String x:Key="packages.openinstalllocation">打开安装位置</system:String>
+  <system:String x:Key="packages.installfromfile">从文件安装 (.oudep)...</system:String>
+  <system:String x:Key="packages.confirm.install.caption">安装包</system:String>
+  <system:String x:Key="packages.confirm.install.message">确定要安装 {0} 吗？</system:String>
+  <system:String x:Key="packages.confirm.update.caption">更新包</system:String>
+  <system:String x:Key="packages.confirm.update.message">确定要将 {0} 更新到版本 {1} 吗？</system:String>
+  <system:String x:Key="packages.confirm.uninstall.caption">卸载包</system:String>
+  <system:String x:Key="packages.confirm.uninstall.message">确定要卸载 {0} 吗？</system:String>
+  <system:String x:Key="packages.status.fetching">正在获取注册表...</system:String>
+  <system:String x:Key="packages.status.uninstalling">正在卸载 {0}...</system:String>
+  <system:String x:Key="packages.status.uninstallfinished">卸载完成</system:String>
+  <system:String x:Key="packages.status.uninstallfailed">卸载失败</system:String>
+  <system:String x:Key="packages.status.listinginstalled">正在列出已安装...</system:String>
+  <system:String x:Key="packages.status.ready">就绪</system:String>
+  <system:String x:Key="packages.status.error">错误</system:String>
 
   <system:String x:Key="pianoroll.key">调性（用于音级显示）</system:String>
   <system:String x:Key="pianoroll.menu.batch">批量编辑</system:String>

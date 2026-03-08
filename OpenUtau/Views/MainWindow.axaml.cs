@@ -1358,6 +1358,7 @@ namespace OpenUtau.App.Views {
                             BoundaryRadiusSeconds = result.BoundaryRadiusSeconds,
                             ScoreThreshold = result.ScoreThreshold,
                             LanguageId = result.LanguageId,
+                            ForceCpu = result.ForceCpu,
                         };
                         string modelPath = result.ModelPath;
                         var transcribeTask = Task.Run(() => {

@@ -33,6 +33,7 @@ namespace OpenUtau.App.Views {
         public float BoundaryRadiusSeconds { get; set; } = 0.02f;
         public float ScoreThreshold { get; set; } = 0.2f;
         public int LanguageId { get; set; } = 0;
+        public bool ForceCpu { get; set; } = false;
     }
 
     public partial class GameSettingsDialog : Window {
@@ -43,6 +44,8 @@ namespace OpenUtau.App.Views {
             InitializeComponent();
             LoadModels();
             BindSliders();
+            // Restore persisted ForceCpu preference
+            ForceCpuCheckBox.IsChecked = Core.Util.Preferences.Default.GameForceCpu;
         }
 
         private void LoadModels() {
@@ -62,10 +65,10 @@ namespace OpenUtau.App.Views {
                 var dirName = System.IO.Path.GetFileName(dir);
                 string displayName;
                 if (dirName.Equals("game", StringComparison.OrdinalIgnoreCase)) {
-                    displayName = "Default";
+                    displayName = "GAME (Default)";
                 } else if (dirName.StartsWith("game-", StringComparison.OrdinalIgnoreCase)) {
                     var suffix = dirName.Substring(5);
-                    displayName = char.ToUpper(suffix[0]) + suffix.Substring(1);
+                    displayName = "GAME " + char.ToUpper(suffix[0]) + suffix.Substring(1);
                 } else {
                     displayName = dirName;
                 }
@@ -159,6 +162,11 @@ namespace OpenUtau.App.Views {
                 languageId = lang.Id;
             }
 
+            bool forceCpu = ForceCpuCheckBox.IsChecked == true;
+            // Persist the ForceCpu preference
+            Core.Util.Preferences.Default.GameForceCpu = forceCpu;
+            Core.Util.Preferences.Save();
+
             var result = new GameDialogResult {
                 ModelPath = model.Path,
                 SamplingSteps = (int)StepsSlider.Value,
@@ -167,6 +175,7 @@ namespace OpenUtau.App.Views {
                 BoundaryRadiusSeconds = (float)SegRadiusSlider.Value,
                 ScoreThreshold = (float)EstThresholdSlider.Value,
                 LanguageId = languageId,
+                ForceCpu = forceCpu,
             };
 
             onFinish?.Invoke(result);

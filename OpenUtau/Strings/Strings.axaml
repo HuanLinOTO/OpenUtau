@@ -76,6 +76,7 @@
   <system:String x:Key="game.settings.est.threshold">Presence Threshold</system:String>
   <system:String x:Key="game.settings.ok">OK</system:String>
   <system:String x:Key="game.settings.cancel">Cancel</system:String>
+  <system:String x:Key="game.settings.force.cpu">Force CPU (disable GPU acceleration)</system:String>
   <system:String x:Key="context.pitch.easein">Ease in</system:String>
   <system:String x:Key="context.pitch.easeinout">Ease in/out</system:String>
   <system:String x:Key="context.pitch.easeout">Ease out</system:String>
